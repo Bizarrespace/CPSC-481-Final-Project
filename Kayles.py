@@ -1,63 +1,73 @@
 import time
-def print_board(board):
-    print("Current Board:")
-    last_row = board[-1]
-    for pin in last_row:
-        print(pin, end=' ')
-    print()
-    print()
 
-def initialize_board(num_pins):
-    return [['X'] * num_pins]
+class KaylesGame:
+    def __init__(self, num_pins):
+        self.board = self.initialize_board(num_pins)
+        self.current_player = 1
 
-    
-def is_valid_move(board, move):
-    if move < 1 or move > 2:
-        return False
+    def print_board(self):
+        print("Current Board:")
+        last_row = self.board[-1]
+        for pin in last_row:
+            print(pin, end=' ')
+        print("\n\n\n\n\n\n\n")
 
-    last_row = board[-1]
-    if move > len(last_row) and len(last_row) != 1:
-        return False
+    def initialize_board(self, num_pins):
+        return [['X'] * num_pins]
 
-    return True
+    def is_valid_move(self, move):
+        if move < 1 or move > 2:
+            return False
 
+        last_row = self.board[-1]
+        if move > len(last_row) and len(last_row) != 1:
+            return False
 
-def make_move(board, move):
-    last_row = board[-1]
-    new_row = last_row[move:]
-    board.append(new_row)
-    return board
+        return True
 
+    def make_move(self, move):
+        last_row = self.board[-1]
+        new_row = last_row[move:]
+        self.board.append(new_row)
 
-def is_game_over(board):
-    return len(board[-1]) == 0
+    def is_game_over(self):
+        return len(self.board[-1]) == 0
 
+    def play(self):
+        while True:
+            self.print_board()
 
-def play_kayles(num_pins):
-    board = initialize_board(num_pins)
-    current_player = 1
+            if self.current_player == 1:
+                player = "Player 1"
+            else:
+                player = "Player 2"
 
-    while True:
-        print_board(board)
+            try:
+                move = int(input(f"{player}, choose your move (1 or 2): "))
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+                continue
+            if self.is_valid_move(move):
+                self.make_move(move)
+                if self.is_game_over():
+                    self.print_board()
+                    print(f"{player} wins!")
+                    time.sleep(1)
+                    break
+                self.current_player = 3 - self.current_player  # Switch player (1 -> 2, 2 -> 1)
+            else:
+                print("Invalid move. Try again.")
 
-        if current_player == 1:
-            player = "Player 1"
-        else:
-            player = "Player 2"
+# Start the game loop
+while True:
+    try:
+        how_many_pins = int(input("How many pins do you want to play with? "))
+    except ValueError:
+                print("Invalid input. Please enter a number.")
+                continue
+    game = KaylesGame(how_many_pins)
+    game.play()
 
-        move = int(input(f"{player}, choose your move (1 or 2): "))
-
-        if is_valid_move(board, move):
-            board = make_move(board, move)
-            if is_game_over(board):
-                print_board(board)
-                print(f"{player} wins!")
-                time.sleep(3)
-                break
-            current_player = 3 - current_player  # Switch player (1 -> 2, 2 -> 1)
-        else:
-            print("Invalid move. Try again.")
-
-
-# Start the game with 10 pins
-play_kayles(10)
+    play_again = input("Do you want to play again? (yes/no) ")
+    if play_again.lower() != "yes":
+        break
