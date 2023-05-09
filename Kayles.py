@@ -10,7 +10,7 @@ class KaylesGame:
         last_row = self.board[-1]
         for pin in last_row:
             print(pin, end=' ')
-        print("\n\n\n\n\n\n\n")
+        print("\n")
 
     def initialize_board(self, num_pins):
         return [['X'] * num_pins]
@@ -49,6 +49,7 @@ class KaylesGame:
                 continue
             if self.is_valid_move(move):
                 self.make_move(move)
+                print("\n\n\n\n\n\n")
                 if self.is_game_over():
                     self.print_board()
                     print(f"{player} wins!")
