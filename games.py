@@ -186,6 +186,9 @@ def query_player(game, state):
     move = None
     while move not in game.actions(state):  # Add this while loop
         move_string = input('Your move? ')
+	if move_string.strip() == '':
+            print("Please enter a valid move.")
+            continue
         try:
             move = eval(move_string)
         except NameError:
