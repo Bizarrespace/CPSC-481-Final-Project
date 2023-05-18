@@ -184,9 +184,9 @@ def query_player(game, state):
     game.display(state)
     print("available moves: {}".format(game.actions(state)))
     move = None
-    while move not in game.actions(state):  # Add this while loop
+    while move not in game.actions(state):
         move_string = input('Your move? ')
-	if move_string.strip() == '':
+        if move_string.strip() == '':
             print("Please enter a valid move.")
             continue
         try:
